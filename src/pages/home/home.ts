@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { Camera } from 'ionic-native';
+import { PatientService } from '../../providers/patient-service';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
+  providers: [PatientService]
 })
 export class HomePage {
   public patient = {
@@ -13,10 +15,11 @@ export class HomePage {
     id: null
   };
 
-  submitted = false;
+  sending = false;
 
   constructor(
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public patientService: PatientService
   ) {}
 
   takePicture () {
@@ -32,11 +35,19 @@ export class HomePage {
   }
 
   onSubmit () {
+    this.sending = true;
+
     console.log('submitted', this.patient);
 
     if (this.patient.base64Image && this.patient.id) {
       // do call
-      this.submitted = true;
+      this.patientService.send(this.patient)
+        .then(data => {
+          console.log('call done', data);
+          this.sending = false;
+        });
     }
+
+    this.sending = false;
   }
 }
