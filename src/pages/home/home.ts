@@ -32,6 +32,8 @@ export class HomePage {
   }
 
   onSubmit () {
+    console.log('submitted', this.patient);
+
     if (this.patient.base64Image && this.patient.id) {
       // do call
       this.submitted = true;
