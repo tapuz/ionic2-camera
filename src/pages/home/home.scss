@@ -1,0 +1,29 @@
+page-home {
+  .action-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    ion-icon {
+      font-size: 5em;
+      display: block;
+      text-align: center;
+    }
+  }
+
+  .patient-input {
+    position: absolute;
+    bottom: 21px;
+    width: 70%;
+  }
+
+  .send-icon {
+    width: 50px;
+    border-radius: 50%;
+    height: 50px;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+  }
+}

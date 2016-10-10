@@ -1,0 +1,23 @@
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>Take a Picture</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-content padding>
+  <form (ngSubmit)="onSubmit()">
+    <div class="action-wrapper" (click)="takePicture()">
+      <ion-icon name="camera" color="primary"></ion-icon>
+      <div class="">Touch to take a Picture</div>
+    </div>
+
+    <ion-item class="patient-input">
+      <ion-label color="primary" floating>Patient id</ion-label>
+      <ion-input type="number" [(ngModel)]="patient.id"></ion-input>
+    </ion-item>
+
+    <button type="submit" ion-button icon-only round class="send-icon" (click)="send">
+      <ion-icon name="paper-plane"></ion-icon>
+    </button>
+  </form>
+</ion-content>
