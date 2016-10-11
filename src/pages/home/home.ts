@@ -23,15 +23,19 @@ export class HomePage {
   ) {}
 
   takePicture () {
-    Camera.getPicture({
+    const options = {
+      quality: 50,
       destinationType: Camera.DestinationType.DATA_URL,
       targetWidth: 1000,
       targetHeight: 1000
-    }).then(imageData => {
-      this.patient.base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, err => {
-      console.log(err);
-    });
+    }
+
+    Camera.getPicture(options)
+      .then(imageData => {
+        this.patient.base64Image = 'data:image/jpeg;base64,' + imageData;
+      }, err => {
+        console.log(err);
+      });
   }
 
   onSubmit () {
@@ -39,15 +43,12 @@ export class HomePage {
 
     console.log('submitted', this.patient);
 
-    if (this.patient.base64Image && this.patient.id) {
-      // do call
+    //if (this.patient.base64Image && this.patient.id) {
       this.patientService.send(this.patient)
         .then(data => {
           console.log('call done', data);
           this.sending = false;
         });
-    }
-
-    this.sending = false;
+    //}
   }
 }
