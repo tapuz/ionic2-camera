@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
-import { Camera } from 'ionic-native';
+import { Camera, Dialogs } from 'ionic-native';
 import { PatientService } from '../../providers/patient-service';
 
 @Component({
@@ -37,7 +37,9 @@ export class HomePage {
       .then(imageData => {
         this.patient.image = 'data:image/jpeg;base64,' + imageData;
         this.send();
-      }, err => {
+      })
+      .catch(err => {
+        this.sending = false;
         console.log('error taking image' , err);
       });
   }
@@ -46,14 +48,24 @@ export class HomePage {
     if (this.patient.image && this.patient.patientID) {
       this.patientService.send(this.patient)
         .then(data => {
-          console.log('call done', data);
           this.patient.image = '';
           this.sending = false;
         })
-        .catch(e => {
-          console.log('error uploading image ', e);
+        .catch(err => {
+          console.log('error uploading image ', err);
           this.sending = false;
         });
+    } else {
+      let message = '';
+      this.sending = false;
+
+      this.patient.patientID ? message = 'Did you take a picture?' : message = 'Did you enter a patient ID?';
+
+      Dialogs.alert(
+        message,
+        'Woops!', // title
+        'Ah no, let me fix that' // buttonName
+      )
     }
   }
 }
