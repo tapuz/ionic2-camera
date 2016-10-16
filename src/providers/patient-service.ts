@@ -1,26 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
+import { POST_IMAGE_URL } from './api';
 import 'rxjs/add/operator/map';
 
-/*
-  Generated class for the PatientService provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class PatientService {
-
   constructor(public http: Http) {
-    console.log('Hello PatientService Provider');
   }
 
   send (data) {
     return new Promise(resolve => {
-      const url = '';
+      const url = POST_IMAGE_URL;
+      const body = JSON.stringify(data);
+      const headers = new Headers({ 'Content-Type': 'application/json' });
 
-      this.http.post(url, data)
-        .map(response => response.json())
+      this.http.post(url, body)
         .subscribe(data => resolve(data));
     });
   }

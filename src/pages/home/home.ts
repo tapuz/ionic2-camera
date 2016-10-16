@@ -11,11 +11,11 @@ import { PatientService } from '../../providers/patient-service';
 })
 export class HomePage {
   public patient = {
-    base64Image: '',
-    id: null
+    image: '',
+    patientID: null
   };
 
-  sending = false;
+  public sending = false;
 
   constructor(
     public navCtrl: NavController,
@@ -23,32 +23,37 @@ export class HomePage {
   ) {}
 
   takePicture () {
+    this.sending = true;
+
     const options = {
-      quality: 50,
+      quality: 100,
       destinationType: Camera.DestinationType.DATA_URL,
+      correctOrientation: true,
       targetWidth: 1000,
       targetHeight: 1000
     }
 
     Camera.getPicture(options)
       .then(imageData => {
-        this.patient.base64Image = 'data:image/jpeg;base64,' + imageData;
+        this.patient.image = 'data:image/jpeg;base64,' + imageData;
+        this.send();
       }, err => {
-        console.log(err);
+        console.log('error taking image' , err);
       });
   }
 
-  onSubmit () {
-    this.sending = true;
-
-    console.log('submitted', this.patient);
-
-    //if (this.patient.base64Image && this.patient.id) {
+  send () {
+    if (this.patient.image && this.patient.patientID) {
       this.patientService.send(this.patient)
         .then(data => {
           console.log('call done', data);
+          this.patient.image = '';
+          this.sending = false;
+        })
+        .catch(e => {
+          console.log('error uploading image ', e);
           this.sending = false;
         });
-    //}
+    }
   }
 }
